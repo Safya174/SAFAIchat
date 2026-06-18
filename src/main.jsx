@@ -4,8 +4,8 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.DEV ? "/" : "/SAFAIchat"} >
        <App />
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
