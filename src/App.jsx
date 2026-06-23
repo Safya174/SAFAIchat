@@ -1,11 +1,11 @@
-
 import './App.css'
-import { createTheme,ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ChatPage from './pages/Chat Page';
 import LandingPage from './pages/landing page';
 import SettingPage from './pages/Settings Page';
 import { Routes, Route } from 'react-router-dom'
+
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -40,23 +40,31 @@ const theme = createTheme({
 })
 
 function App() {
-  
   return (
     <ThemeProvider theme={theme}>
-         <Box className='App' sx={{width:"100wh",height:"auto",backgroundColor:'#09061B',padding:0,margin:0, boxSizing: "border-box"}} >
-          
-            <Routes>
-              <Route path="/" element={<LandingPage/>}></Route>
-              <Route path='/chat' element={<ChatPage/>}></Route>
-              <Route path='/settings' element={<SettingPage/>}></Route>
-            </Routes>
-      
-         </Box>
-
+      {/* 1. تم تغيير width إلى 100vw بدلاً من 100wh الكارثية
+        2. تم تغيير height إلى 100vh بدلاً من auto عشان يملى الشاشة وتطبيق الـ Reset صح
+        3. تم تغيير لون الخلفية ليقرأ من السيم مباشرة بدلاً من قيمة مانيوال
+      */}
+      <Box 
+        className='App' 
+        sx={{
+          width: "100vw", 
+          minHeight: "100vh", 
+          backgroundColor: 'background.default', 
+          padding: 0,
+          margin: 0, 
+          boxSizing: "border-box"
+        }} 
+      >
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path='/chat' element={<ChatPage />} />
+          <Route path='/settings' element={<SettingPage />} />
+        </Routes>
+      </Box>
     </ThemeProvider>
-    
-    
-      )
-  
-    }
-export default App
+  )
+}
+
+export default App;

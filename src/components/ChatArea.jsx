@@ -8,7 +8,8 @@ import TypingLoader from "../components/TypingLoader";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import TextField from "@mui/material/TextField";
 import IconButton from '@mui/material/IconButton';
-export default function ChatArea() {
+import MenuIcon from "@mui/icons-material/Menu";
+export default function ChatArea({ onMenuClick }) {
   return (
     <Box
       sx={{
@@ -23,7 +24,7 @@ export default function ChatArea() {
       {/* الجزء الأول: الهيدر اللي فوق */}
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography
-          sx={{ color: "text.primary", fontSize: "20px", marginRight: "20px" }}
+          sx={{ color: "text.primary", fontSize: "20px", marginRight: {sm:"15px",md:"20px"} }}
         >
           How do circuits work?
         </Typography>
@@ -35,8 +36,16 @@ export default function ChatArea() {
             color: "#AFA9EC",
             fontSize: "11px",
             borderRadius: "20px",
+            marginRight :""
           }}
         />
+        <IconButton
+          color="inherit"
+          onClick={onMenuClick}
+          sx={{ display: { md: "none" }, color: "white", p: 0, marginRight: '10px' }}
+        >
+          <MenuIcon />
+        </IconButton>
       </Box>
 
       <Divider sx={{ marginTop: "20px" }} />

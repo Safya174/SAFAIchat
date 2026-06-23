@@ -13,10 +13,12 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import Typography from '@mui/material/Typography';
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, handleDrawerToggle, variant = "permanent" }) {
   return (
     <Drawer
-      variant="permanent"
+      variant={variant}
+      open={variant == "temporary"? mobileOpen : true}
+      onClose={handleDrawerToggle}
       anchor="left"
       sx={{
         width: 250,

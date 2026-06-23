@@ -35,9 +35,10 @@ export default function AIpersona(){
 ]
 let newArray = feature.map((f)=>{
     let Icon = f.icon
+    
     return(
        <Grid item xs={6} >
-     <Card sx={{ minWidth: 275,borderRadius:"16px",textAlign:"center",padding:"15px",  border: "0.5px solid", borderColor: "divider", }}>
+     <Card sx={{ minWidth:{sm:"100%",md:"275px"},borderRadius:"16px",textAlign:"center",padding:"15px",  border: "0.5px solid", borderColor: "divider", }}>
      
     
       <Icon sx={{color:"#B4A7FF",fontSize:"50px",height:"50px",width:'50px',padding:"10px"}}></Icon>

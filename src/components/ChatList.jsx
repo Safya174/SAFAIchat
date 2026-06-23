@@ -11,14 +11,16 @@ import Box from '@mui/material/Box';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom'
-export default function ChatList() {
+export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "permanent" }) {
   let Navigate = useNavigate();
   let handleopenSettings = ()=>{
     Navigate('/settings')
   }
   return (
     <Drawer
-      variant="permanent"
+      variant={variant}
+      open={variant == "temporary" ? mobileOpen : true }
+      onClose={handleDrawerToggle}
       anchor="left"
       sx={{
         width: 250,
