@@ -19,7 +19,6 @@ export default function SettingPage() {
   let isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    // 1. الأب الكبير واخد display: flex عشان يرص السايدبار والإعدادات "جنب بعض" مش فوق بعض
     <Box 
       sx={{ 
         display: "flex", 
