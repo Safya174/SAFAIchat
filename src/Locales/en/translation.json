@@ -1,0 +1,57 @@
+{
+  "badge": "SafAI: Your Smart Assistant, Built on Gemini Pro",
+  "hero_title": "Your AI assistant, smarter than ever",
+  "hero_description": "Ask anything, get instant answers. Saf AI understands context, remembers your conversations, and helps you think better.",
+  "features": {
+    "fast_replies_title": "Fast replies",
+    "fast_replies_desc": "Instant streaming responses word by word",
+    "chat_history_title": "Chat history",
+    "chat_history_desc": "All your conversations saved locally",
+    "ai_personas_title": "AI personas",
+    "ai_personas_desc": "Choose your assistant's personality",
+    "dark_mode_title": "Dark mode",
+    "dark_mode_desc": "Easy on the eyes, day or night"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your Nova AI experience",
+    "sidebar": {
+      "settings_group": "SETTINGS",
+      "profile": "Profile",
+      "ai_personas": "AI Personas",
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "account_group": "ACCOUNT",
+      "privacy": "Privacy",
+      "delete_data": "Delete data"
+    },
+    "personas": {
+      "title": "AI Persona",
+      "general_title": "General",
+      "general_desc": "All-purpose assistant",
+      "developer_title": "Developer",
+      "developer_desc": "Code & tech focused",
+      "engineer_title": "Engineer",
+      "engineer_desc": "Electronics & signals",
+      "writer_title": "Writer",
+      "writer_desc": "Creative writing help"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "dark_mode_title": "Dark mode",
+      "dark_mode_desc": "Use dark theme across the app",
+      "streaming_replies": "Streaming replies"
+    }
+  },
+  "sidebar": {
+    "brand_name": "S A F A I",
+    "settings_group": "SETTINGS",
+    "profile": "Profile",
+    "ai_personas": "AI Personas",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "account_group": "ACCOUNT",
+    "privacy": "Privacy",
+    "delete_data": "Delete data"
+  }
+}

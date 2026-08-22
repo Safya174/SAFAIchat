@@ -12,42 +12,165 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { GoogleGenAI } from '@google/genai';
 import { nanoid } from 'nanoid';
-
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
-
-export default function ChatArea({ onMenuClick }) {
+const CHAT_MODES = {
+  general: "تنبيه: نحن الآن في عام 2026! أنت مساعد ذكي عام ومفرفش، تجيب بناءً على أحداث وتكنولوجيا 2026 ولا تعش في الماضي.",
+  
+  programming: "تنبيه هام جداً: نحن الآن في عام 2026! أنت مبرمج Senior محترف وفرفوش. تعامل مع أحدث إصدارات المكتبات ولغات البرمجة لعام 2026 (زي React 19 و Vite الحديثة).",
+  
+  telecom: "تنبيه: نحن الآن في عام 2026! أنت مهندس اتصالات خبير تشرح أحدث تقنيات الـ 5G Advanced وبدايات الـ 6G لعام 2026 بأسلوب هندسي دقيق وفرفوش.",
+  
+  writing: "تنبيه: نحن في عام 2026. أنت كاتب ومبدع ومصحح لغوي محترف تساعد المستخدم بأسلوب عصري ومواكب للوقت الحالي."
+};
+export default function ChatArea({ onMenuClick, allChats, setAllChats }) {
   const [messages, setMessages] = useState([
     { id: 1, text: "Hello! I am Gemini AI. How can I help you today?", sender: "ai" }
   ]);
+  const [chatTitle, setChatTitle] = useState("New Chat");
+  
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const handleSendMessage = async () => {
-    if(!inputValue.trim() || loading) return;
-    let useQuery = inputValue;
-    setMessages((prev)=>[...prev,{id:nanoid(),text:useQuery,sender:"user"}])
-    setInputValue("")
-    setLoading(true);
-    try{
-     let Respons = await ai.models.generateContent({
-      model : "gemini-2.5-flash",
-      contents:useQuery,
-      config: {
-    systemInstruction: "أنت مبرمج مصري فرفوش، صديق للمستخدم، بتساعده في البرمجة بأسلوب ممتع ومشجع، وبتستخدم شوية إيفيهات خفيفة ومصطلحات برمجية سهلة، ودايماً بتشجعه بكلمات زي (يا بطل، يا فنان، عاش)."
-  }
-      
 
-     })
-     setMessages((prev)=>[...prev,{id:nanoid(),text:Respons.text,sender:"ai"}])
-    }catch (error) {
-      console.error("Gemini Error:", error);
-      setMessages((prev) => [...prev, { id: nanoid(), text: "Sorry, something went wrong. Please try again.", sender: "ai" }]);
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || loading) return;
+
+    const isStreamingEnabled =
+      JSON.parse(localStorage.getItem("streamingReplies")) ?? false;
+
+    const useQuery = inputValue;
+
+    const userMessage = {
+      id: nanoid(),
+      text: useQuery,
+      sender: "user",
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+    setLoading(true);
+
+    try {
+      let aiText = "";
+      let aiMessageId = nanoid();
+
+      if (isStreamingEnabled) {
+        // إضافة رسالة AI فارغة
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: aiMessageId,
+            text: "",
+            sender: "ai",
+          },
+        ]);
+
+        const stream = await ai.models.generateContentStream({
+          model: "gemini-2.5-flash",
+          contents: useQuery,
+          config: {
+            systemInstruction:
+              CHAT_MODES[localStorage.getItem("chatMode") || "general"],
+            tools: [{ googleSearch: {} }],
+          },
+        });
+
+        for await (const chunk of stream) {
+          aiText += chunk.text;
+
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? {
+                    ...msg,
+                    text: aiText,
+                  }
+                : msg
+            )
+          );
+        }
+      } else {
+        const response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: useQuery,
+          config: {
+            systemInstruction:
+              CHAT_MODES[localStorage.getItem("chatMode") || "general"],
+            tools: [{ googleSearch: {} }],
+          },
+        });
+
+        aiText = response.text;
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: aiMessageId,
+            text: aiText,
+            sender: "ai",
+          },
+        ]);
+      }
+
+      // الرسائل النهائية للحفظ
+      const updateMessages = [
+        ...messages,
+        userMessage,
+        {
+          id: aiMessageId,
+          text: aiText,
+          sender: "ai",
+        },
+      ];
+
+      const currentTime = new Date().toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      let currentTitle = chatTitle;
+
+      if (messages.length === 1) {
+        const titleResponse = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: `لخص السؤال التالي في عنوان قصير جداً وموجز ومحترف (لا يزيد عن 4 كلمات وبدون علامات ترقيم): "${useQuery}"`,
+        });
+
+        currentTitle = titleResponse.text.trim();
+        setChatTitle(currentTitle);
+      }
+
+      // 👈 بقينا بنحدث الـ state المشترك بدل ما نتعامل مع localStorage مباشرة هنا
+      const currentChatData = {
+        id: currentTitle,
+        title: currentTitle,
+        time: currentTime,
+        messages: updateMessages,
+      };
+
+      setAllChats((prevChats) => {
+        const filteredChats = prevChats.filter(
+          (chat) => chat.title !== currentTitle
+        );
+        return [currentChatData, ...filteredChats];
+      });
+    } catch (error) {
+      console.error(error);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nanoid(),
+          text: "Sorry, something went wrong. Please try again.",
+          sender: "ai",
+        },
+      ]);
     } finally {
-      // د. قفل اللودر في كل الأحوال
       setLoading(false);
     }
-  }
-  
+  };
+     
+    
   return (
     <Box
       sx={{
@@ -64,23 +187,23 @@ export default function ChatArea({ onMenuClick }) {
         <Typography
           sx={{ color: "text.primary", fontSize: "20px", marginRight: {sm:"15px",md:"20px"} }}
         >
-          How do circuits work?
+          {chatTitle}
         </Typography>
         <Chip
           label=" Gemini Pro"
           sx={{
-            background: "#1a163a",
-            border: "0.5px solid #534AB7",
-            color: "#AFA9EC",
+            bgcolor: "custom.cardBg",
+            border: "0.5px solid",
+            borderColor: "primary.main",
+            color: "custom.mutedText",
             fontSize: "11px",
             borderRadius: "20px",
-            marginRight :""
           }}
         />
         <IconButton
           color="inherit"
           onClick={onMenuClick}
-          sx={{ display: { md: "none" }, color: "white", p: 0, marginRight: '10px' }}
+          sx={{ display: { md: "none" }, color: "text.primary", p: 0, mx: '10px' }}
         >
           <MenuIcon />
         </IconButton>
@@ -88,8 +211,6 @@ export default function ChatArea({ onMenuClick }) {
 
       <Divider sx={{ marginTop: "20px" }} />
 
-      {/* الجزء الثاني: صندوق الرسايل (ممكن نديله flexGrow عشان يملى المكان) */}
-     
       {/* الجزء الثاني: صندوق الرسايل */}
       <Box
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", mt: 2, overflowY: "auto" }}
@@ -101,7 +222,8 @@ export default function ChatArea({ onMenuClick }) {
               sx={{
                 display: "flex",
                 justifyContent: masg.sender === "user" ? "flex-end" : "flex-start",
-                marginRight: "30px",
+                mx: "30px",
+                gap:2,
                 marginTop: "30px",
               }}
             >
@@ -130,19 +252,19 @@ export default function ChatArea({ onMenuClick }) {
               {/* 3. لو الـ sender هو user، بنعرض الأفاتار في الآخر على اليمين */}
               {masg.sender === "user" && (
                 <Avatar sx={{ bgcolor: "custom.mutedText" }} alt="User" src="/broken-image.jpg">
-                  AM
+                  SA
                 </Avatar>
               )}
             </Box>
           );
         })}
 
-        {/* 👈 هنا مكان اللودر الصح (جوه الصندوق الكبير وبره الـ map) */}
+        {/* اللودر */}
         {loading && (
           <Box
             sx={{
               display: "flex",
-              justifyContent: "flex-start", // دايماً على الشمال لأن الـ AI هو اللي بيفكر
+              justifyContent: "flex-start",
               marginRight: "30px",
               marginTop: "30px",
             }}
@@ -159,7 +281,7 @@ export default function ChatArea({ onMenuClick }) {
                 marginLeft: "15px",
               }}
             >
-              <TypingLoader /> {/* الأنيمايشن بتاعك هنا */}
+              <TypingLoader />
             </Box>
           </Box>
         )}
@@ -170,7 +292,8 @@ export default function ChatArea({ onMenuClick }) {
           sx={{
             display: "flex",
             marginTop: "30px",
-            border: "0.4px solid #534AB7",
+            border: "0.4px solid",
+            borderColor: "primary.main",
             padding: "10px",
             borderRadius: "15px",
             width: "100%",
@@ -196,16 +319,17 @@ export default function ChatArea({ onMenuClick }) {
             disabled={loading}
             sx={{
               flexGrow: 1,
-              bgcolor: "text.primary",
+              bgcolor: "background.paper",
               "& .MuiOutlinedInput-notchedOutline": { border: "none" },
               "&:hover .MuiOutlinedInput-notchedOutline": { border: "none" },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": { border: "none" },
               "& .MuiInputBase-input": {
-              color: "#000000", 
-            },
+                color: "text.primary", 
+              },
+              "& .MuiInputLabel-root": {
+                color: "custom.mutedText",
+              },
               borderRadius: "15px",
-              
-
             }}
           />
         </Box>

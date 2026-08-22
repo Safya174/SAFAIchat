@@ -6,15 +6,17 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import HistoryIcon from '@mui/icons-material/History';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useTranslation } from "react-i18next";
 
-let feature = [
-  { id: "1", title: "Fast replies", description: "Instant streaming responses word by word", icon: FlashOnIcon },
-  { id: 2, title: "Chat history", description: "All your conversations saved locally", icon: HistoryIcon },
-  { id: 3, title: "AI personas", description: "Choose your assistant's personality", icon: SmartToyIcon },
-  { id: 4, title: "Dark mode", description: "Easy on the eyes, day or night", icon: DarkModeIcon },
-];
 
 export default function BasicCard() {
+  const { t } = useTranslation();
+  let feature = [
+  { id: "1", title: t("features.fast_replies_title"), description: t("features.fast_replies_desc"), icon: FlashOnIcon },
+  { id: 2, title: t("features.chat_history_title"),  description: t("features.chat_history_desc"), icon: HistoryIcon },
+  { id: 3, title: t("features.ai_personas_title") , description: t("features.ai_personas_desc"), icon: SmartToyIcon },
+  { id: 4, title:t("features.dark_mode_title") , description:t("features.dark_mode_desc"), icon: DarkModeIcon },
+];
   let featuremap = feature.map((f) => {
     let Icon = f.icon;
     return (
@@ -27,12 +29,12 @@ export default function BasicCard() {
           minWidth: { xs: '100%', sm: '250px' } 
         }}
       >
-        <CardContent sx={{ textAlign: "center", backgroundColor: '#120D35', width: '100%' }}> 
-          <Icon sx={{ color: "#B4A7FF", fontSize: "50px", borderRadius: "30%", height: "50px", width: '50px', backgroundColor: "#2D266D", padding: "10px" }} />
-          <Typography gutterBottom sx={{ color: '#E8E6FF', fontSize: { xs: 24, md: 30 } }}>
+        <CardContent sx={{ textAlign: "center", bgcolor: 'custom.cardBg', width: '100%' }}> 
+          <Icon sx={{ color: "primary.light", fontSize: "50px", borderRadius: "30%", height: "50px", width: '50px', bgcolor: "custom.activeBg", padding: "10px" }} />
+          <Typography gutterBottom sx={{ color: 'text.primary', fontSize: { xs: 24, md: 30 } }}>
             {f.title}
           </Typography>
-          <Typography variant="body1" sx={{ color: "#7B6ED6" }}>
+          <Typography variant="body1" sx={{ color: "custom.mutedText" }}>
             {f.description}
           </Typography>
         </CardContent>

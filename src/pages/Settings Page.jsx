@@ -8,13 +8,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from "@mui/icons-material/Menu";
+import { useTranslation } from 'react-i18next';
 
 export default function SettingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  
+  const { t } = useTranslation();
   let theme = useTheme();
   let isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -60,10 +61,10 @@ export default function SettingPage() {
 
         {/* العناوين الأساسية */}
         <Typography sx={{ color: 'text.primary', fontSize: "28px", fontWeight: "bold" }}>
-          Settings
+          {t("settings.title")}
         </Typography>
         <Typography sx={{ color: "secondary.main", marginBottom: "30px" }}>
-          Customize your Nova AI experience
+           {t("settings.subtitle")}
         </Typography>
 
         {/* بوكس الـ AI Persona الداخلي */}
@@ -78,10 +79,10 @@ export default function SettingPage() {
           boxSizing: "border-box",
           marginBottom: "30px"
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px',gap:2 }}>
             <SmartToyIcon sx={{ marginRight: '10px', color: "secondary.main" }} />
             <Typography sx={{ color: 'text.primary', fontSize: "20px", fontWeight: "600" }}>
-              AI Persona
+              {t("settings.personas.title")}
             </Typography>
           </Box>
           <AIPersona />

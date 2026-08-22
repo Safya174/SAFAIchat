@@ -1,8 +1,9 @@
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; // قمنا باستيراد Box بدلاً من div العادية
-
+import { useTranslation } from "react-i18next";
 export default function Hero(){
+  const { t } = useTranslation();
   return(
     <Box sx={{
       display: 'flex',
@@ -17,9 +18,10 @@ export default function Hero(){
       <Chip
         label="SafAI: Your Smart Assistant, Built on Gemini Pro"
         sx={{
-          background: '#1a163a',
-          border: '0.5px solid #534AB7',
-          color: '#AFA9EC',
+          bgcolor: 'custom.cardBg',
+          border: '0.5px solid',
+          borderColor: 'primary.main',
+          color: 'custom.mutedText',
           fontSize: { xs: '10px', sm: '12px' }, // تظبيط حجم الـ Chip للموبايل
           borderRadius: '20px',
           whiteSpace: 'normal', // يسمح بنزول النص لسطر جديد لو الموبايل صغير جداً
@@ -32,13 +34,13 @@ export default function Hero(){
         variant="h2" 
         component="h1" 
         sx={{
-          color: "white",
+          color: "text.primary",
           marginTop: "20px",
           fontWeight: 'bold',
           fontSize: { xs: '28px', sm: '40px', md: '50px' } // أحجام منطقية للموبايل والتاب والديسك توب
         }}
       > 
-        Your AI assistant,
+       {t("badge")} 
       </Typography> 
 
       <Typography 
@@ -50,7 +52,7 @@ export default function Hero(){
           fontSize: { xs: '28px', sm: '40px', md: '50px' } 
         }}
       > 
-        smarter than ever
+        {t("hero_title")} 
       </Typography>
 
       <Typography 
@@ -63,7 +65,7 @@ export default function Hero(){
           fontSize: { xs: '14px', sm: '16px', md: '20px' } // خطوط مريحة للعين
         }}
       > 
-        Ask anything, get instant answers. Saf AI understands context, remembers your conversations, and helps you think better.
+        {t("hero_description")} 
       </Typography>
 
     </Box>
