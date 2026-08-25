@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 
 export default function ChatPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+
   let theme = useTheme();
   let isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -18,7 +19,7 @@ export default function ChatPage() {
     const localData = localStorage.getItem("allChats");
     return localData ? JSON.parse(localData) : [];
   });
-
+ let [ActiveChat , SetActiveChat] = useState(null)
   useEffect(() => {
     localStorage.setItem("allChats", JSON.stringify(allChats));
   }, [allChats]);
@@ -26,6 +27,12 @@ export default function ChatPage() {
   const deleteChat = (chatId) => {
     setAllChats((prevChats) => prevChats.filter((chat) => chat.id !== chatId));
   };
+function handleNewChat(){
+  SetActiveChat(null)
+}
+function handleSelectChat(chat){
+  SetActiveChat(chat)
+}
 
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden" }}> 
@@ -35,11 +42,14 @@ export default function ChatPage() {
         handleDrawerToggle={handleDrawerToggle}
         savedChats={allChats}
         deleteChat={deleteChat}
+        onSelectChat={handleSelectChat}
+        onNewChat={handleNewChat}
       />
       <ChatArea
         onMenuClick={handleDrawerToggle}
         allChats={allChats}
         setAllChats={setAllChats}
+        activeChat={ActiveChat}
       />
     </Box>
   );

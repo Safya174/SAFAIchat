@@ -13,8 +13,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "permanent", savedChats, deleteChat }) {
+import Button from '@mui/material/Button';
+         
+export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "permanent", savedChats, deleteChat ,onNewChat,onSelectChat}) {
   let Navigate = useNavigate();
   const { i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
@@ -46,6 +47,7 @@ export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "pe
             <TipsAndUpdatesIcon sx={{ width: "20px", height: "20px", padding: "10px", borderRadius: "10px", bgcolor: "primary.main", color: "white" }} />
             <ListItemText sx={{ color: "text.primary" }} primary="S A F A I" />
           </ListItemButton>
+          <Button   onClick={onNewChat}>New Chat</Button>
         </ListItem>
         <Divider component="li" />
 
@@ -79,7 +81,7 @@ export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "pe
                   </IconButton>
                 }
               >
-                <ListItemButton onClick={() => console.log("فتح الشات:", chat.id)}>
+                <ListItemButton onClick={() => onSelectChat(chat)}>
                   <ListItemText primary={chat.title} sx={{ textAlign: isRtl ? "right" : "left" }} />
                 </ListItemButton>
               </ListItem>
@@ -108,6 +110,9 @@ export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "pe
           <IconButton onClick={handleopenSettings}>
             <SettingsIcon />
           </IconButton>
+           
+            
+        
         </Box>
       </List>
     </Drawer>
