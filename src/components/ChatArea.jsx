@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
 import InputAdornment from "@mui/material/InputAdornment";
-import { stackClasses } from "@mui/material/Stack";
+import { useTranslation } from "react-i18next";
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -33,14 +33,16 @@ export default function ChatArea({
   setAllChats,
   activeChat,
 }) {
+  const { t } = useTranslation();
+
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I am Gemini AI. How can I help you today?",
+      text: t("welcome_message", "Hello! I am Gemini AI. How can I help you today?"),
       sender: "ai",
     },
   ]);
-  const [chatTitle, setChatTitle] = useState("New Chat");
+  const [chatTitle, setChatTitle] = useState(t("new_chat", "New Chat"));
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -62,18 +64,17 @@ export default function ChatArea({
       setMessages([
         {
           id: 1,
-          text: "Hello! I am Gemini AI. How can I help you today?",
+          text: t("welcome_message", "Hello! I am Gemini AI. How can I help you today?"),
           sender: "ai",
         },
       ]);
-      setChatTitle("New Chat");
+      setChatTitle(t("new_chat", "New Chat"));
     }
-  }, [activeChat]);
+  }, [activeChat, t]);
 
   let fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // 🛠️ تم تصليح الأخطاء داخل دالة تغيير الملف هنا
   let handleFileChnge = (e) => {
     let file = e.target.files[0];
     if (!file) return;
@@ -91,7 +92,7 @@ export default function ChatArea({
         setSelectedFile({
           name: file.name,
           type: "text",
-          content: event.target.result, // تم تصليح event بدل e
+          content: event.target.result,
         });
       };
       Reader.readAsText(file);
@@ -100,14 +101,14 @@ export default function ChatArea({
         setSelectedFile({
           name: file.name,
           type: "image",
-          mimeType: file.type, // تم تصليح mimeType بدل minType
-          data: event.target.result.split(",")[1], // تم تصليح event بدل e
+          mimeType: file.type,
+          data: event.target.result.split(",")[1],
         });
       };
       Reader.readAsDataURL(file);
     }
 
-    e.target.value = ""; // تصفير الـ Input لتسهيل إعادة رفع نفس الملف
+    e.target.value = "";
   };
 
   const handleSendMessage = async () => {
@@ -225,13 +226,13 @@ export default function ChatArea({
             currentTitle =
               useQuery.length > 20
                 ? useQuery.substring(0, 20) + "..."
-                : useQuery || "New Chat";
+                : useQuery || t("new_chat", "New Chat");
           }
         } catch {
           currentTitle =
             useQuery.length > 20
               ? useQuery.substring(0, 20) + "..."
-              : useQuery || "New Chat";
+              : useQuery || t("new_chat", "New Chat");
         }
         setChatTitle(currentTitle);
       }
@@ -346,6 +347,7 @@ export default function ChatArea({
             )}
 
             <Typography
+              dir="auto" // 🛠️ هذه الخاصية تضبط اتجاه العلامات والكلمات تلقائياً حسب اللغة
               sx={{
                 color: "text.primary",
                 bgcolor:
@@ -436,7 +438,7 @@ export default function ChatArea({
 
         <TextField
           id="outlined-basic"
-          placeholder={selectedFile ? "" : "Ask Me Anything..."} // استبدال label بـ placeholder عشان الـ Chip يبان صح
+          placeholder={selectedFile ? "" : t("ask_me_anything", "Ask Me Anything...")}
           variant="outlined"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

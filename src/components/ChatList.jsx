@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
          
 export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "permanent", savedChats, deleteChat ,onNewChat,onSelectChat}) {
   let Navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
 
   let handleopenSettings = () => {
@@ -47,12 +47,14 @@ export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "pe
             <TipsAndUpdatesIcon sx={{ width: "20px", height: "20px", padding: "10px", borderRadius: "10px", bgcolor: "primary.main", color: "white" }} />
             <ListItemText sx={{ color: "text.primary" }} primary="S A F A I" />
           </ListItemButton>
-          <Button   onClick={onNewChat}>New Chat</Button>
+          <Button onClick={onNewChat} sx={{ whiteSpace: "nowrap", px: 1 }}>
+            {t("new_chat", "New Chat")}
+          </Button>
         </ListItem>
         <Divider component="li" />
 
         <Typography component="h4" sx={{ px: 2.5, color: "custom.mutedText", mt: 2, fontSize: "14px", fontWeight: "bold", textAlign: isRtl ? "right" : "left" }}> 
-          Today
+          {t("today", "Today")}
         </Typography> 
 
         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
@@ -103,16 +105,13 @@ export default function ChatList({ mobileOpen, handleDrawerToggle, variant = "pe
                 Safya Abdelsalam
               </Typography>
               <Typography component="h4" sx={{ color: "custom.mutedText", fontSize: "12px" }}> 
-                Free plan
+                {t("free_plan", "Free plan")}
               </Typography>
             </Box>
           </Box>
           <IconButton onClick={handleopenSettings}>
             <SettingsIcon />
           </IconButton>
-           
-            
-        
         </Box>
       </List>
     </Drawer>

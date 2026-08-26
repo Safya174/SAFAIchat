@@ -2,6 +2,12 @@
   "badge": "SafAI: Your Smart Assistant, Built on Gemini Pro",
   "hero_title": "Your AI assistant, smarter than ever",
   "hero_description": "Ask anything, get instant answers. Saf AI understands context, remembers your conversations, and helps you think better.",
+  "try_now": "Try Now",
+  "new_chat": "New Chat",
+  "today": "Today",
+  "free_plan": "Free plan",
+  "ask_me_anything": "Ask Me Anything...",
+  "welcome_message": "Hello! I am Gemini AI. How can I help you today?",
   "features": {
     "fast_replies_title": "Fast replies",
     "fast_replies_desc": "Instant streaming responses word by word",
@@ -14,7 +20,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Customize your Nova AI experience",
+    "subtitle": "Customize your Saf AI experience",
     "sidebar": {
       "settings_group": "SETTINGS",
       "profile": "Profile",

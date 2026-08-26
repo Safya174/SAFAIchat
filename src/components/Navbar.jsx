@@ -7,10 +7,10 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 function ResponsiveAppBar() {
   let navigate = useNavigate();
-
+ const { t } = useTranslation();
   const handleOpenChat = () => {
     navigate("/chat");
   };
@@ -51,7 +51,7 @@ function ResponsiveAppBar() {
                 "&:hover": { bgcolor: "primary.dark" }
               }}
             >
-              Get Started
+              {t("try_now")}
             </Button>
           </Box>
 

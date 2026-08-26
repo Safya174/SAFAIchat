@@ -2,6 +2,12 @@
   "badge": "SafAI: مساعدك الذكي المبني على Gemini Pro",
   "hero_title": "مساعدك الذكي، أذكى من أي وقت مضى",
   "hero_description": "اسأل أي شيء واحصل على إجابات فورية. يفهم Saf AI السياق، ويتذكر محادثاتك، ويساعدك على التفكير بشكل أفضل.",
+  "try_now": "جرب الآن",
+  "new_chat": "محادثة جديدة",
+  "today": "اليوم",
+  "free_plan": "الخطة المجانية",
+  "ask_me_anything": "اسألني عن أي شيء...",
+  "welcome_message": "أهلاً بك! أنا Gemini AI. كيف يمكنني مساعدتك اليوم؟",
   "features": {
     "fast_replies_title": "ردود سريعة",
     "fast_replies_desc": "استجابة فورية ومتدفقة كلمة بكلمة",
@@ -14,7 +20,7 @@
   },
   "settings": {
     "title": "الإعدادات",
-    "subtitle": "خصص تجربتك مع Nova AI",
+    "subtitle": "خصص تجربتك مع Saf AI",
     "sidebar": {
       "settings_group": "الإعدادات",
       "profile": "الملف الشخصي",
